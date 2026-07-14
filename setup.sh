@@ -21,6 +21,15 @@ cd "$ROOT"
 
 echo "==> OmniAvatar setup | model=$MODEL | python=$($PY --version 2>&1)"
 
+# --- 0. System deps -----------------------------------------------------------
+# ffmpeg is required by the audio preprocessing (called as a system binary via
+# subprocess, not the pip imageio-ffmpeg). RunPod base images often lack it.
+if ! command -v ffmpeg >/dev/null 2>&1; then
+    echo "==> Installing ffmpeg (system)"
+    apt-get update -qq && apt-get install -y -qq ffmpeg || \
+        echo "!! could not apt-get ffmpeg — install it manually (apt-get install -y ffmpeg)"
+fi
+
 # --- 1. Python deps -----------------------------------------------------------
 # Order matters. Install the CUDA torch stack first, then install requirements
 # WITH constraints.txt so its transitive deps cannot upgrade/clobber torch
