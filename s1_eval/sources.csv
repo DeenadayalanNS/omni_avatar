@@ -1,0 +1,9 @@
+asset_id,pair_id,kind,path,source,url,license,notes
+img01,1,image,eval_frozen/img01.jpg,frozen_eval_set_day13,,internal-frozen,Indian male 30s podcast desk
+aud01,1,audio,prepared_audio/aud01.wav,tts,,,English calm male TTS
+img02,2,image,eval_frozen/img02.jpg,frozen_eval_set_day13,,internal-frozen,Indian female 25-35
+aud02,2,audio,prepared_audio/aud02.wav,tts,,,Tamil female TTS
+img06,6,image,eval_frozen/img06.jpg,frozen_eval_set_day13,,internal-frozen,Podium presenter
+aud06,6,audio,prepared_audio/aud06.wav,real,,,REAL podium speech w/ ambience
+img10,10,image,eval_frozen/img10.jpg,frozen_eval_set_day13,,internal-frozen,Singer studio framing
+aud10,10,audio,prepared_audio/aud10.wav,pixabay,PUT_URL_HERE,Pixabay/Mixkit or CC0 vocal,SINGING acapella 8-10s

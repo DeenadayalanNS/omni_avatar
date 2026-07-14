@@ -6,7 +6,7 @@ dit_path: pretrained_models/Wan2.1-T2V-1.3B/diffusion_pytorch_model.safetensors
 vae_path: pretrained_models/Wan2.1-T2V-1.3B/Wan2.1_VAE.pth
 wav2vec_path: pretrained_models/wav2vec2-base-960h
 exp_path: pretrained_models/OmniAvatar-1.3B
-num_persistent_param_in_dit:  # You can set `num_persistent_param_in_dit` to a small number to reduce VRAM required. 
+num_persistent_param_in_dit:  # You can set `num_persistent_param_in_dit` to a small number to reduce VRAM required.
 
 reload_cfg: True
 sp_size: 1

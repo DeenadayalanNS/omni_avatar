@@ -1,0 +1,13 @@
+id,lang,type,image_concept,audio_concept
+1,en,tts,Indian male 30s podcast desk mic hands on desk,English calm male TTS
+2,ta,tts,Indian female 25-35 front-facing plain indoor,Tamil female TTS
+3,en,tts,Western male 40s office professional,English calm female TTS (cross-gender)
+4,en,tts,Western female 20s-30s casual home/outdoor,English expressive/energetic TTS
+5,en,real,Older person 50+ formal attire,Slow measured serious speech
+6,en,real,Podium presenter hands on podium flags,REAL podium speech with room ambience
+7,en,real,Person with glasses mid-shot,English fast-pace speech
+8,en,real,Male full beard front-facing,English calm male real casual
+9,hi,tts,Dark skin tone bright/outdoor lighting,Hindi or Telugu TTS
+10,en,singing,Studio mic singer framing headphones,SINGING acapella clip
+11,en,pause,Neutral person plain background chest-up,PAUSE-HEAVY speech long silences
+12,ta,tts,Tamil-looking male casual,Tamil male TTS

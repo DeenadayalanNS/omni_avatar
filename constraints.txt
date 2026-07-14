@@ -1,0 +1,7 @@
+# Pin the CUDA torch stack so that `pip install -r requirements.txt` cannot
+# upgrade/clobber it (its transitive deps otherwise pull torch 2.13 from PyPI,
+# which mismatches torchvision 0.19 -> "operator torchvision::nms does not exist").
+# Used via:  pip install -r requirements.txt -c constraints.txt
+torch==2.4.0
+torchvision==0.19.0
+torchaudio==2.4.0

@@ -1,0 +1,31 @@
+# TEACHER BASELINE — 12 PAIRS  (copy to ../baseline_pairs.txt and fill in real paths)
+# Format (one pair per non-comment line):  prompt@@image@@audio
+#   image : a face from the FROZEN eval set (Day 13), 720p+, unique identity
+#   audio : 16 kHz mono WAV, 8-12 s (run through prep_audio.py)
+# Prompt structure: [first-frame description] - [human behavior] - [background]
+# Replace eval_frozen/imgNN and prepared_audio/audNN with your real paths.
+#
+# --- 1. Core product case: clean baseline sync + identity (EN calm male TTS) ---
+A realistic video of an Indian man in his 30s at a podcast desk with a microphone, hands resting on the desk. He speaks calmly and clearly to the camera with subtle natural head movements. Warm, softly lit studio background.@@eval_frozen/img01.jpg@@prepared_audio/aud01.wav
+# --- 2. Tamil lip-sync + Indian female identity (Tamil female TTS) ---
+A realistic video of an Indian woman in her late twenties facing the camera. She speaks in a warm, measured tone with gentle expressions and slight head motion. Plain, softly lit indoor background.@@eval_frozen/img02.jpg@@prepared_audio/aud02.wav
+# --- 3. Global look + voice-face mismatch probe (EN calm FEMALE voice on male face) ---
+A realistic video of a Western man in his 40s in a professional office. He looks directly at the camera and speaks in a composed, professional manner with natural micro-expressions. Softly blurred office background.@@eval_frozen/img03.jpg@@prepared_audio/aud03.wav
+# --- 4. Voice energy -> expression + gesture intensity (EN expressive/energetic) ---
+A realistic video of a young Western woman in a casual home setting. She speaks energetically and expressively, with lively facial expressions and animated hand gestures. Bright, casual indoor background.@@eval_frozen/img04.jpg@@prepared_audio/aud04.wav
+# --- 5. Age generalization (slow measured serious speech) ---
+A realistic video of a distinguished person over 50 in formal attire. They speak slowly and seriously, with measured articulation and calm, dignified expressions. Neutral formal background.@@eval_frozen/img05.jpg@@prepared_audio/aud05.wav
+# --- 6. Gesture hero case + REAL podium audio with room ambience ---
+A realistic video of a presenter at a podium with both hands visible on the podium and official flags behind. They deliver a speech with confident hand gestures and engaging expressions. Formal stage setting.@@eval_frozen/img06.jpg@@prepared_audio/aud06.wav
+# --- 7. Accessory handling + rapid phonemes (EN fast-pace) ---
+A realistic video of a person wearing glasses, mid-shot, facing the camera. They speak at a fast pace with crisp articulation and quick, expressive facial movements. Simple indoor background.@@eval_frozen/img07.jpg@@prepared_audio/aud07.wav
+# --- 8. Mouth-occlusion case: lip visibility through beard (EN calm male, real casual) ---
+A realistic video of a man with a full beard facing the camera. He speaks casually and calmly, with clear mouth movements visible through the beard and relaxed expressions. Plain background.@@eval_frozen/img08.jpg@@prepared_audio/aud08.wav
+# --- 9. Skin-tone diversity + 2nd Indian language (Hindi or Telugu TTS) ---
+A realistic video of a dark-skinned person in bright outdoor lighting. They speak clearly to the camera with natural expressions and gentle head movement. Sunlit outdoor background.@@eval_frozen/img09.jpg@@prepared_audio/aud09.wav
+# --- 10. Singing mode: sustained notes, melody mouth shapes (SINGING, acapella) ---
+A realistic video of a singer in a studio, chest-up, wearing headphones near a microphone. They sing expressively with sustained mouth shapes and emotive facial expressions. Recording studio background.@@eval_frozen/img10.jpg@@prepared_audio/aud10.wav
+# --- 11. Silence handling: mouth must CLOSE during pauses (PAUSE-HEAVY speech) ---
+A realistic video of a person with a neutral expression, chest-up, plain background. They speak with long pauses between sentences; the mouth closes and rests naturally during silences. Minimal indoor background.@@eval_frozen/img11.jpg@@prepared_audio/aud11.wav
+# --- 12. Tamil male combo: launch-language double coverage (Tamil male TTS) ---
+A realistic video of a Tamil man in a casual setting facing the camera. He speaks in a friendly, conversational tone with natural expressions and light head movement. Relaxed indoor background.@@eval_frozen/img12.jpg@@prepared_audio/aud12.wav

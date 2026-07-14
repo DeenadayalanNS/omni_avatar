@@ -1,0 +1,29 @@
+# Model weights — download on the pod with setup.sh, never commit (tens of GB)
+pretrained_models/
+checkpoints/
+
+# Generated outputs
+demo_out/
+outputs/
+
+# Eval: assets, results, and vendored metric code (download/prepare locally)
+eval/
+eval_frozen/
+prepared_audio/
+raw_audio/
+s1_eval/third_party/
+baseline_pairs.txt
+
+# Python envs / caches
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Local scratch
+*.log
+tmp/
+.DS_Store
