@@ -31,7 +31,9 @@ $PY -m pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 \
     --index-url https://download.pytorch.org/whl/cu124
 
 echo "==> Installing requirements (torch pinned via constraints.txt)"
-$PY -m pip install -r requirements.txt -c constraints.txt
+# --ignore-installed blinker: RunPod/Ubuntu ships blinker via distutils, which pip
+# cannot uninstall when flask (an xfuser dep) needs a newer blinker. Skip it.
+$PY -m pip install -r requirements.txt -c constraints.txt --ignore-installed blinker
 $PY -m pip install "huggingface_hub[cli]"
 
 # Safety net: re-pin the exact CUDA torch build in case anything slipped past.
