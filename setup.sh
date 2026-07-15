@@ -10,6 +10,10 @@
 #   HF_TOKEN=hf_xxx   optional, faster/authenticated Hugging Face downloads
 #   FLASH_ATTN=1      also build flash-attn (optional, slow to compile)
 #   PY=python3        interpreter to use (default: python3)
+#   PERSIST=1         install deps into a venv at /workspace/omni_venv so that
+#                     STOP (not terminate) keeps EVERYTHING — deps, weights, code
+#                     — and the next start needs NO reinstall. Run generate.py
+#                     with /workspace/omni_venv/bin/python afterwards.
 #
 # Safe to re-run: pip is idempotent and hf download resumes/skips existing files.
 set -euo pipefail
@@ -18,6 +22,18 @@ MODEL="${1:-1.3B}"
 PY="${PY:-python3}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
+
+# Persistent venv on the /workspace volume: survives pod STOP/START (and network
+# volumes), so deps are installed once and never again.
+if [ "${PERSIST:-0}" = "1" ]; then
+    VENV="${VENV:-/workspace/omni_venv}"
+    if [ ! -x "$VENV/bin/python" ]; then
+        echo "==> Creating persistent venv at $VENV"
+        $PY -m venv "$VENV"
+    fi
+    PY="$VENV/bin/python"
+    echo "==> Using persistent venv: $PY"
+fi
 
 echo "==> OmniAvatar setup | model=$MODEL | python=$($PY --version 2>&1)"
 
@@ -51,15 +67,21 @@ $PY -m pip install --no-deps --force-reinstall \
     --index-url https://download.pytorch.org/whl/cu124
 
 echo "==> Verifying the generation stack imports"
-$PY - <<'PYEOF'
+# CUDA availability is checked but NOT fatal: a transient "CUDA unknown error"
+# (common on fresh RunPod pods — fixed by restarting the pod) should not abort the
+# weight download, which needs no GPU. It's re-checked at generate time.
+$PY - <<'PYEOF' || echo "!! verify import step reported an issue (see above) — continuing"
 import torch
 from torchvision.ops import nms
 from transformers import Wav2Vec2FeatureExtractor
 from peft import LoraConfig, inject_adapter_in_model
 from xfuser.core.distributed import initialize_model_parallel, init_distributed_environment
 import diffusers
-assert torch.cuda.is_available(), "CUDA not available inside this env!"
-print(f"OK: torch {torch.__version__} | diffusers {diffusers.__version__} | cuda {torch.cuda.is_available()}")
+cuda = torch.cuda.is_available()
+print(f"OK: torch {torch.__version__} | diffusers {diffusers.__version__} | cuda {cuda}")
+if not cuda:
+    print("!! WARNING: CUDA not visible right now. If this is a fresh pod, RESTART the pod "
+          "(RunPod: pod menu -> Restart), then re-run setup.sh. Weight download continues.")
 PYEOF
 
 if [ "${FLASH_ATTN:-0}" = "1" ]; then
@@ -69,8 +91,9 @@ fi
 
 # --- 2. Model weights ---------------------------------------------------------
 mkdir -p pretrained_models
-# hf CLI reads HF_TOKEN from the environment automatically.
-dl() { hf download "$1" --local-dir "./pretrained_models/$2"; }
+# Use the venv's hf when PERSIST, else the system hf. Reads HF_TOKEN from env.
+HF="hf"; [ "${PERSIST:-0}" = "1" ] && HF="$(dirname "$PY")/hf"
+dl() { "$HF" download "$1" --local-dir "./pretrained_models/$2"; }
 
 if [[ "$MODEL" != "1.3B" && "$MODEL" != "14B" && "$MODEL" != "both" ]]; then
     echo "!! Unknown model '$MODEL' (use: 1.3B | 14B | both)"; exit 1
@@ -98,3 +121,9 @@ echo "    $PY generate.py --model $TEST_MODEL \\"
 echo "        --prompt \"A realistic video of a man speaking to the camera.\" \\"
 echo "        --image examples/images/0000.jpeg \\"
 echo "        --audio examples/audios/0000.MP3"
+if [ "${PERSIST:-0}" = "1" ]; then
+    echo ""
+    echo "==> PERSIST mode: deps live in $VENV, weights in $ROOT/pretrained_models"
+    echo "    Both are on /workspace -> STOP the pod (do NOT terminate) and next start"
+    echo "    needs NO reinstall. Always run with:  $PY generate.py ..."
+fi
